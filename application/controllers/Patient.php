@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Install extends CI_Controller {
+class Patient extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -19,12 +19,26 @@ class Install extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+	public function __construct()
+	{
+		parent::__construct();
+		if($this->session->userdata('type') !== 'patient' || !$this->session->userdata('username')) {
+			redirect("login");
+		}
+	}
 	public function index()
 	{
-		var_dump($this->config->load('database'));
-		$data['title'] = 'Install Page';
+		$data['title'] = 'Patient Control Panel';
+		$data['username'] = $this->session->userdata('username');
 		$this->load->view('templates/header', $data);
-		$this->load->view('install', $data);
+		$this->load->view('patient', $data);
 		$this->load->view('templates/footer');
 	}
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+		redirect('patient/index');
+	}
+
 }
