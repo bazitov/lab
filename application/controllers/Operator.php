@@ -107,25 +107,34 @@ class Operator extends CI_Controller {
 		$this->load->view('templates/header', $data);
 
 		$reportname = $this->input->post("reportname");
-		$reportname = $this->input->post("reportname");
+		$rid = $this->input->post("rid");
 		
-
+		$tests = $this->input->post("completetests");
+		$tests = json_decode(stripslashes($tests));
+		
 		//set validations
 		$this->form_validation->set_rules("reportname", "Report Name", "trim|required");
 		
-
+		$tests_flag = true;
 		if ($this->form_validation->run() == FALSE)
 		{
 		   //validation fails
 			$report = $this->reports_model->getReport($id);
+			if(!$report) {
+				$tests_flag = false;
+				$report = $this->reports_model->getReportWithoutTests($id);
+			}
 			$data['id'] = $report[0]['reportid'];
 			$data['reportname'] = $report[0]['reportname'];
 			$data['name'] = $report[0]['name'];
 			$i = 0;
-			foreach ($report as $key => $value) {
-				$data['tests'][$i]['test'] = $value['test'];
-				$data['tests'][$i]['testid'] = $value['testid'];
-				$data['tests'][$i++]['result'] = $value['result'];
+			if($tests_flag)
+			{
+				foreach ($report as $key => $value) {
+					$data['tests'][$i]['test'] = $value['test'];
+					$data['tests'][$i]['testid'] = $value['testid'];
+					$data['tests'][$i++]['result'] = $value['result'];
+				}
 			}
 		   	$this->load->view('reports/edit', $data);
 		}
@@ -133,9 +142,10 @@ class Operator extends CI_Controller {
 		{
 			if($this->input->post('btn-edit') == 'Edit') 
 			{
-				$this->patient_model->update($name,$address,$phoneno,$email,$id);
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center"><strong>Success!</strong> Patient Data saved.</div>');
-				redirect('operator/editpatient/'.$id);
+				$report_id = $this->reports_model->update($reportname,$rid);
+				$this->tests_model->add($tests,$rid);
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center"><strong>Success!</strong> Report Edited.</div>');
+				redirect('operator/editreport/'.$id);
 			}
 		}
 		$this->load->view('templates/footer');

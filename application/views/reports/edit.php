@@ -9,7 +9,7 @@
 	<table width="100%">
 		<tr>
 			<td>ID:</td>
-			<td><input class="form-control" type="hidden" name="id" value="<?php echo $id; ?>"/>
+			<td><input class="form-control" type="hidden" name="rid" value="<?php echo $id; ?>"/>
 				<span><?php echo $id;?></span>
 			</td>
 		</tr>
@@ -27,9 +27,11 @@
 		<tr>
 			<td>Tests:</td>
 			<td>
-				<?php foreach ($tests as $test): ?>
-					<?php echo $test['test'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$test['result'];?>&nbsp;&nbsp;&nbsp;<a href="<?php echo site_url('operator/deltest/'.$test['testid'].'/'.$id);?>">Delete</a><br />
-				<?php endforeach; ?>
+				<?php if(isset($tests)):?>
+					<?php foreach ($tests as $test): ?>
+						<?php echo $test['test'].'&nbsp;&nbsp;&nbsp;&nbsp;'.$test['result'];?>&nbsp;&nbsp;&nbsp;<a href="<?php echo site_url('operator/deltest/'.$test['testid'].'/'.$id);?>">Delete</a><br />
+					<?php endforeach; ?>
+				<?php endif;?>
 				<a href="javascript:window.open('<?php echo site_url("operator/addtests"); ?>','addtests','width=600,height=400')">Add Tests</a>
 				<input type="hidden" name="completetests" id="completetests" value="<?php echo set_value('completetests'); ?>" />
 				<div id="testsmsg"></div>

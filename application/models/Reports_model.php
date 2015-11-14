@@ -45,6 +45,17 @@ class Reports_model extends CI_Model
     }
   }
 
+  public function getReportWithoutTests($id = 0) {
+    if($id) {
+      return $this->db->select('reports.*,reports.id AS reportid, patients.*')
+                  ->from('reports')
+                  ->where('reports.id',$id)
+                  ->join('patients', 'reports.patient_id = patients.id')
+                  ->get()
+                  ->result_array();
+    }
+  }
+
   public function update($reportname,$id)
   {
     $data = array(
