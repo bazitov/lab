@@ -19,7 +19,7 @@ class Login_model extends CI_Model
      //get the username & password from tbl_usrs
      function get_patient($usr, $pwd)
      {
-          $sql = "select * from patients where name = ? and passcode = ? and status = 'ok'";
+          $sql = "select * from patients where name = ? and passcode = ? and status = 'ok' and passused = '0'";
           $query = $this->db->query($sql,array($usr,md5($pwd)));
           return $query->num_rows();
      }

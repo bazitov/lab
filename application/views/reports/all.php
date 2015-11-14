@@ -4,7 +4,9 @@
 	<h1>All Reports<?php if($name) echo ' for '.$name; ?></h1>
 
 	<div class="inset">
+	<?php if(!$patient):?>
 	<a href="<?php echo site_url('operator/addreport'); ?>">Add new Report</a>
+	<?php endif;?>
 	<br /><br />
 	<?php if(!$noData):?>
 	<table width="100%" class="list">
@@ -20,10 +22,16 @@
 				<td><?php echo $report['reportname'];?></td>
 				<td><?php echo $report['name'];?></td>
 				<td>
+				<?php if(!$patient):?>
 					<a href="<?php echo site_url('operator/editreport/'.$report['id']) ;?>">Edit</a> | 
 					<a href="<?php echo site_url('operator/delreport/'.$report['id']) ;?>">Delete</a> | 
-
 					<a href="javascript:window.open('<?php echo site_url('operator/report/'.$report['id']); ?>','addtests','width=700,height=800')">View</a>
+				<?php else:?>
+					<a href="javascript:window.open('<?php echo site_url('patient/report/'.$report['id']); ?>','addtests','width=700,height=800')">View</a> | 
+					<a href="<?php echo site_url('patient/generatepdf/'.$report['id']) ;?>">Generate PDF Report</a> | 
+					<a target="_blank" href="<?php echo site_url('patient/downloadpdf/'.$report['id']) ;?>">Download Report (PDF)</a> | 
+					<a href="<?php echo site_url('patient/emailpdf/'.$report['id']) ;?>">Email Report (PDF)</a>
+				<?php endif;?>
 				</td>
 			</tr>
 		<?php endforeach; ?>

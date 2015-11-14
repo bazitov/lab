@@ -19,6 +19,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script type="text/javascript">
 		$(document).ready(function () {
 		    $("#patient").keyup(function () {
+		    	if($("#patient").val().trim() == '')
+		    		{
+		    			$('#patientnames').hide();
+		    			return;
+		    		} else
+		    		{
+		    			$('#patientnames').show();
+		    		}
 		        $.ajax({
 		            type: "POST",
 		            url: "<?php echo site_url('login/getPatientName'); ?>",
@@ -27,17 +35,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		            },
 		            dataType: "json",
 		            success: function (data) {
-		                if (data.length > 0) {
-		                    $('#PatientNameList').empty();
-		                    $('#patient').attr("data-toggle", "dropdown");
-		                    $('#PatientNameList').dropdown('toggle');
-		                }
-		                else if (data.length == 0) {
-		                    $('#patient').attr("data-toggle", "");
-		                }
+		                $('#patientnames').empty();
 		                $.each(data, function (key,value) {
-		                    if (data.length >= 0)
-		                        $('#PatientNameList').append('<li role="presentation" >' + value['name'] + '</li>');
+		                    if (data.length >= 0) {
+		                    	$('#patientnames').append('<li>'+value['name']+'</li>');
+		                    }
 		                });
 		            }
 		        });

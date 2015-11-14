@@ -32,6 +32,7 @@ class Login extends CI_Controller {
 			redirect("patient");
 		}
 		$this->load->model('login_model');
+          $this->load->model('patient_model');
 	}
 	public function getPatientName(){
         $keyword=$this->input->post('keyword');
@@ -123,20 +124,25 @@ class Login extends CI_Controller {
                {
                     //check if username and password is correct
                     $usr_result = $this->login_model->get_patient($username, $password);
+                    $id_data = $this->patient_model->getUserId($username, $password);
+                    $uid = $id_data[0]['id'];
                     if ($usr_result > 0) //active user record is present
                     {
                          //set the session variables
                          $sessiondata = array(
                               'username' => $username,
                               'loginuser' => TRUE,
+                              'id' => $uid,
                               'type' => 'patient'
                          );
+                         // have to uncomment it when all will be ready
+                         //$this->patient_model->makePassUsed($uid);
                          $this->session->set_userdata($sessiondata);
                          redirect("patient");
                     }
                     else
                     {
-                         $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Invalid username and password!</div>');
+                         $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Invalid Name and Passcode or Passcode is expired. Please Contact Lab</div>');
                          redirect('login/patient');
                     }
                }

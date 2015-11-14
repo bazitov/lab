@@ -205,6 +205,7 @@ class Operator extends CI_Controller {
 
 	public function allreports($id=0)
 	{
+		$data['patient'] = FALSE;
 		$data['title'] = 'Operator Control Panel';
 		$data['name'] = '';
 		if($id !=0) {
@@ -294,16 +295,34 @@ class Operator extends CI_Controller {
 	{
 		if($id)
 		{
+			$tests_flag = true;
 			$data['title'] = 'Report';
 			$data['username'] = $this->session->userdata('username');
 			$this->load->view('templates/header', $data);
-			$data['report'] = $this->reports_model->getReport($id);
+			$report = $this->reports_model->getReport($id);
+			if(!$report) {
+				$tests_flag = false;
+				$report = $this->reports_model->getReportWithoutTests($id);
+			}
+			$data['report'] = $report;
+			$data['tests'] = $tests_flag;
 			$this->load->view('reports/show',$data);
 			$this->load->view('templates/footer');
 		}
 		else
 		{
 			redirect('operator/allreports');
+		}
+	}
+
+	public function changestatus($id,$status)
+	{
+		if($id && $status)
+		{
+			$statusForDB = ($status == 'activate') ? 'ok' : 'pending';
+			$this->patient_model->setStatus($id,$statusForDB);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-center"><strong>Success!</strong> Status changed.</div>');
+			redirect('operator/allpatients');
 		}
 	}
 

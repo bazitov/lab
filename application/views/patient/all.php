@@ -26,7 +26,17 @@
 					<a href="<?php echo site_url('operator/editpatient/'.$patient['id']) ;?>">Edit</a> | 
 					<a href="<?php echo site_url('operator/delpatient/'.$patient['id']) ;?>">Delete</a> | 
 					<a href="<?php echo site_url('operator/allreports/'.$patient['id']) ;?>">See Reports</a> | 
-					<a href="<?php echo site_url('operator/generatepasscode/'.$patient['id']) ;?>">Generate Passcode</a>
+					<a href="<?php echo site_url('operator/generatepasscode/'.$patient['id']) ;?>">Generate Passcode</a> | 
+					<?php
+						$action = ($patient['status'] == 'pending') ? 'activate' : 'deactivate';
+					?>
+					<a href="<?php echo site_url('operator/changestatus/'.$patient['id'].'/'.$action)?>">
+					<?php if($patient['status'] == 'pending'): ?>
+						Activate
+					<?php else: ?>
+						Deactivate
+					<?php endif;?>
+					</a>
 				</td>
 			</tr>
 		<?php endforeach; ?>

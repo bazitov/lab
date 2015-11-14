@@ -7,7 +7,9 @@
 			<tr>
 				<td><label for="username">Enter Name:</label></td>
 				<td><input type="text" id="patient" class="form-control" autocomplete="off" name="username" value="<?php echo set_value('username'); ?>" />
-					<ul class="dropdown-menu txtcountry" style="" role="menu" aria-labelledby="dropdownMenu"  id="PatientNameList">
+					<ul id="patientnames">
+
+					</ul>
              </ul>
 					<span class="text-danger"><?php echo form_error('username'); ?></span></td>
 			</tr>
