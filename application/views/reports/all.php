@@ -1,7 +1,7 @@
 <div style="width:400px; margin:0 auto"><?php echo $this->session->flashdata('msg'); ?></div>
 <div id="wrapper">
 	<div style="float:right; margin-right:20px; margin-top:12px;"><?php echo $menu; ?></div>
-	<h1>All Reports<?php echo $name;?></h1>
+	<h1>All Reports<?php if($name) echo ' for '.$name; ?></h1>
 
 	<div class="inset">
 	<a href="<?php echo site_url('operator/addreport'); ?>">Add new Report</a>
@@ -22,14 +22,14 @@
 				<td>
 					<a href="<?php echo site_url('operator/editreport/'.$report['id']) ;?>">Edit</a> | 
 					<a href="<?php echo site_url('operator/delreport/'.$report['id']) ;?>">Delete</a> | 
-					<a href="<?php echo site_url('operator/allreports/'.$report['id']) ;?>">See Reports</a> | 
-					<a href="<?php echo site_url('operator/generatepasscode/'.$report['id']) ;?>">Generate Passcode</a>
+
+					<a href="javascript:window.open('<?php echo site_url('operator/report/'.$report['id']); ?>','addtests','width=700,height=800')">View</a>
 				</td>
 			</tr>
 		<?php endforeach; ?>
 	</table>
 	<?php else: ?>
-		No Records
+		No Reports
 	<?php endif; ?>
 </div>
 </div>

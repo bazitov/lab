@@ -22,6 +22,10 @@ class Login extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+          $this->output->set_header("HTTP/1.1 200 OK");
+          $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
+          $this->output->set_header("Cache-Control: post-check=0, pre-check=0");
+          $this->output->set_header("Pragma: no-cache");
 		if($this->session->userdata('type') === 'operator' && $this->session->userdata('username')) {
 			redirect("operator");
 		} elseif($this->session->userdata('type') === 'patient' && $this->session->userdata('username')) {
